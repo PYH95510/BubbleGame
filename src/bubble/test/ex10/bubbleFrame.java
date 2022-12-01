@@ -29,9 +29,9 @@ public class bubbleFrame extends JFrame {
 
 	private void initSetting() {
 		setSize(1000, 640);
-		setLayout(null); 
-		setLocationRelativeTo(null); 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		setLayout(null); // 
+		setLocationRelativeTo(null); // 
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //
 	}
 
 	private void initListener() {
@@ -59,16 +59,12 @@ public class bubbleFrame extends JFrame {
 						player.up();
 					}
 					break;
-					
 				case KeyEvent.VK_SPACE:
-					if(!player.isUp() && !player.isDown()) {
-						Bubble bubble = new Bubble(player);
-						add(bubble);
-					}
+					Bubble bubble = new Bubble(player);
+					add(bubble);
 					break;
 				}
 			}
-
 
 			@Override
 			public void keyReleased(KeyEvent e) {
