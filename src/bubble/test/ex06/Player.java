@@ -1,4 +1,4 @@
-package bubble.test.ex05;
+package bubble.test.ex06;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -6,31 +6,31 @@ import javax.swing.JLabel;
 import lombok.Getter;
 import lombok.Setter;
 
-// class Player -> new 가능한 애들!! 게임에 존재할 수 있음. (추상메서드를 가질 수 없다.)
+
 @Getter
 @Setter
 public class Player extends JLabel implements Movable {
 
-	
+	// location
 	private int x;
 	private int y;
 
-	
+
 	private boolean left;
 	private boolean right;
 	private boolean up;
 	private boolean down;
 	
+	// player speed
 	private final int SPEED = 4;
-	private final int JUMPSPEED = 2;
-	
-	
-	
+	private final int JUMPSPEED = 2; // up, down
+
 	private ImageIcon playerR, playerL;
 
 	public Player() {
 		initObject();
 		initSetting();
+		initBackgroundPlayerService();
 	}
 
 	private void initObject() {
@@ -39,7 +39,7 @@ public class Player extends JLabel implements Movable {
 	}
 
 	private void initSetting() {
-		x = 55;
+		x = 80;
 		y = 535;
 
 		left = false;
@@ -51,8 +51,12 @@ public class Player extends JLabel implements Movable {
 		setSize(50, 50);
 		setLocation(x, y);
 	}
+	
+	private void initBackgroundPlayerService() {
+		new Thread(new BackgroundPlayerService(this)).start();
+	}
 
-
+	// Event handler
 	@Override
 	public void left() {
 		System.out.println("left");
@@ -92,45 +96,43 @@ public class Player extends JLabel implements Movable {
 
 	}
 
-	//left up, right up
+	// left + up, right + up
 	@Override
 	public void up() {
+		System.out.println("up");
 		up = true;
 		new Thread(()->{
-			for(int i = 0; i<130/JUMPSPEED; i ++) {
-				y = y -JUMPSPEED;
-				setLocation(x,y);
+			for(int i=0; i<130/JUMPSPEED; i++) {
+				y = y - JUMPSPEED;
+				setLocation(x, y);
 				try {
 					Thread.sleep(5);
 				} catch (InterruptedException e) {
-					
 					e.printStackTrace();
 				}
 			}
-			up = false; //jump is done so up is false
-			down(); //down is start
+			
+			up = false;
+			down();
 			
 		}).start();
-		System.out.println("jump");
-
 	}
 
 	@Override
 	public void down() {
+		System.out.println("down");
 		down = true;
 		new Thread(()->{
-			for(int i = 0; i<130/JUMPSPEED; i ++) {
+			for(int i=0; i<130/JUMPSPEED; i++) {
 				y = y + JUMPSPEED;
-				setLocation(x,y);
+				setLocation(x, y);
 				try {
 					Thread.sleep(3);
 				} catch (InterruptedException e) {
-					
 					e.printStackTrace();
 				}
 			}
 			down = false;
-			
 		}).start();
 	}
 }
